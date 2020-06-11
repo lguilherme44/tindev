@@ -23,6 +23,7 @@ module.exports = {
       if (targetSocket) {
         req.io.to(targetSocket).emit('match', loggedDev);
       }
+      console.log('Match entre: ', loggedDev.name, targetDev.name);
     }
 
     loggedDev.likes.push(targetDev._id);

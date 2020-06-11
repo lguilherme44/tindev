@@ -20,7 +20,7 @@ export default function Login({ navigation }) {
   useEffect(() => {
     AsyncStorage.getItem('user').then((user) => {
       if (user) {
-        navigation.navigate('Home', { user });
+        navigation.navigate('Main', { user });
       }
     });
   }, []);
@@ -30,20 +30,20 @@ export default function Login({ navigation }) {
 
     await AsyncStorage.setItem('user', data._id);
 
-    navigation.navigate('Home', { user: data._id });
+    navigation.navigate('Main', { user: data._id });
   }
 
   return (
     <KeyboardAvoidingView
-      behavior="padding"
+      behavior='padding'
       enabled={Platform.OS === 'ios'}
       style={styles.container}
     >
       <Image source={logo} />
       <TextInput
-        placeholder="Digite seu usuário do Github"
-        placeholderTextColor="#999"
-        autoCapitalize="none"
+        placeholder='Digite seu usuário do Github'
+        placeholderTextColor='#999'
+        autoCapitalize='none'
         autoCorrect={false}
         style={styles.input}
         value={user}
