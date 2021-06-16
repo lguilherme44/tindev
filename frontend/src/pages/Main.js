@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
-import { Link } from 'react-router-dom';
-import './Main.css';
-import api from '../services/api';
-import logo from '../assets/logo.svg';
-import like from '../assets/like.svg';
-import dislike from '../assets/dislike.svg';
-import itsamatch from '../assets/itsamatch.png';
+import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
+import { Link } from "react-router-dom";
+import "./Main.css";
+import api from "../services/api";
+import logo from "../assets/logo.svg";
+import like from "../assets/like.svg";
+import chat from "../assets/chat.svg";
+import dislike from "../assets/dislike.svg";
+import itsamatch from "../assets/itsamatch.png";
 
-export default function Main({ match }) {
+export default function Main({ match, history }) {
   const [users, setUsers] = useState([]);
+  const [chatRoom, setChatRoom] = useState("");
   const [matchDev, setMatchDev] = useState(null);
 
   useEffect(() => {
     async function loadUsers() {
-      const response = await api.get('/devs', {
+      const response = await api.get("/devs", {
         headers: { user: match.params.id },
       });
 
@@ -25,11 +27,11 @@ export default function Main({ match }) {
   }, [match.params.id]);
 
   useEffect(() => {
-    const socket = io('http://localhost:3333', {
+    const socket = io("http://localhost:3333", {
       query: { user: match.params.id },
     });
 
-    socket.on('match', (dev) => {
+    socket.on("match", (dev) => {
       setMatchDev(dev);
     });
   }, [match.params.id]);
@@ -48,6 +50,12 @@ export default function Main({ match }) {
     });
 
     setUsers(users.filter((user) => user._id !== id));
+  }
+
+  function handleChatRoom() {
+    setChatRoom("chat");
+
+    history.push("/room/chat");
   }
 
   return (
@@ -72,6 +80,10 @@ export default function Main({ match }) {
 
                 <button type="button" onClick={() => handleLike(user._id)}>
                   <img src={like} alt="Like" />
+                </button>
+
+                <button type="button" onClick={handleChatRoom}>
+                  <img src={chat} alt="Chat" />
                 </button>
               </div>
             </li>
